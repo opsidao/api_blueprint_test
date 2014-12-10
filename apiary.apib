@@ -1,0 +1,101 @@
+FORMAT: 1A
+
+# CMS Read
+The CMS read api
+
+# Frontpage [/frontpage]
+
+Provides everything needed to render the frontpage in a single API call.
+
+## Main [GET]
+
++ Request (application/json)
+
+        {
+            device_type: 'web', # Required
+            market_code: 'es'  # Required
+        }
+
++ Response 400
++ Response 200
+
+        {
+            banners: {
+                top: [{
+                    artwork_url: '',
+                    alt_text: '',
+                    href: ''
+                }]
+            },
+            links: {
+                footer: [{
+                    group_name: '',
+                    links: [{
+                        title: '',
+                        url: ''
+                    ]
+                }]
+            },
+            lists: [{
+                title: '',
+                list_url: '',
+                contents: [{
+                    artwork_url: '',
+                    content_url: '',
+                    price_label: '',
+                    rating: 3,
+                    title: ''
+                }]
+            }],
+            marketing_links: [{
+                artwork_url: '',
+                link_url: '',
+                alt_text: ''
+            }],
+            menus: [{
+                title: '',
+                menu_url: '',
+                sections: [{
+                    title: '',
+                    links: [{
+                        link_url: '',
+                        title: ''
+                    }]
+                }]
+            }]
+        }
+
+# Movies listing [/movies]
+
+## List [GET]
+
++ Request (application/json)
+
+        {
+            device_type: 'web', # Required
+            market_code: 'es'   # Required
+            genre_name: '',
+            sort_type: [:by_publication_date | :by_popularity | :by_title],
+            per_page: 10,
+            page: 1,
+            subscription_plan_id: 1
+        }
+
++ Response 200
+
+        {
+            paging: {
+                per_page: 10
+                current_page: 1,
+                pages_count: 10
+            },
+            movies: [{
+                artwork_url: '',
+                content_url: '',
+                price_label: '',
+                rating: 3,
+                title: ''
+            }
+        }
+
+
