@@ -1,322 +1,146 @@
 FORMAT: 1A
+HOST: https://alpha-api.app.net
 
-# CMS Read
-Provides read-only access to the contents of Wuaki.
+# Real World API
+This API Blueprint demonstrates a real world example documenting a portion of [App.net API](http://developers.app.net).
 
-# Group Type definitions
+NOTE: This document is a **work in progress**.
 
-# Device types [/device_types]
+# Group Posts
+This section groups App.net post resources.
 
-## GET
-
-Returns all the device types ºknown to the system.
-
-+ Response 200 (application/json)
-
-        [{
-            name: '',
-            id: ''
-        }]
-
-# Genres [/genres]
-
-## GET
-
-Returns the genres available for the given market_code.
-
-+ Request (application/json)
-
-        {
-            market_code: 'es' // Required
-        }
-
-+ Response 200 (application/json)
-
-        [{
-            name: '',
-            id: ''
-        }]
-
-# Subscription plans [/subscription_plans]
-
-## GET
-
-Returns all the subcription plans available.
-
-+ Request (application/json)
-
-        {
-            device_type: 'web', // Required
-            market_code: 'es'   // Required
-        }
-
-+ Response 200 (application/json)
-
-        [{
-            name: '',
-            id: ''
-        }]
-
-# Group Frontpage
-
-# Frontpage [/frontpage]
-
-Provides everything needed to render the frontpage in a single API call.
-
-## GET
-
-+ Request (application/json)
-
-        {
-            device_type: 'web', // Required
-            market_code: 'es'  // Required
-        }
-
-+ Response 200 (application/json)
-
-        {
-            banners: {
-                top: [{
-                    artwork_url: '',
-                    alt_text: '',
-                    href: ''
-                }]
-            },
-            links: {
-                footer: [{
-                    group_name: '',
-                    links: [{
-                        title: '',
-                        url: ''
-                    ]
-                }]
-            },
-            lists: [{
-                title: '',
-                full_list_url: '',
-                contents: [{
-                    cover_url: '',
-                    content_url: '',
-                    price_label: '',
-                    normalized_rating: 3,
-                    title: ''
-                }]
-            }],
-            marketing_links: [{
-                artwork_url: '',
-                link_url: '',
-                alt_text: ''
-            }],
-            menus: [{
-                title: '',
-                menu_url: '',
-                sections: [{
-                    title: '',
-                    links: [{
-                        link_url: '',
-                        title: ''
-                    }]
-                }]
-            }]
-        }
-    
-# Group Movies
-
-# Movies listing [/movies]
-
-Allows to get movie listings, with options to:
-
-- Filter by genre
-- Filter belonging to subcription plan 
-- Choose a sorting definition for the results
-- Paginate the movies
-
-## GET
-
-+ Request (application/json)
-
-        {
-            device_type: 'web', // Required
-            market_code: 'es'   // Required
-            genre_name: '',
-            sort_type: '' // One of by_publication_date, by_popularity or by_title,
-            per_page: 10,
-            page: 1,
-            subscription_plan_id: 1
-        }
-        
-+ Response 200 (application/json)
-
-        {
-            paging: {
-                per_page: 10
-                current_page: 1,
-                pages_count: 10
-            },
-            movies: [{
-                id: 3232,
-                cover_url: '',
-                content_url: '',
-                price_label: '',
-                rating: 3,
-                title: ''
-            }]
-        }
-
-# Movie details [/movies/{movie_id}]
-
-Returns the details for a movie in a given market and device
-
-## GET
-
-+ Params
-    + movie_id (integer) The movie id
-
-+ Request (application/json)
-
-        {
-            device_type: 'web', // Required
-            market_code: 'es'   // Required
-        }
-
-+ Response 200 (application/json)
-
-        {
-            id: {movie_id}
-            title: '',
-            cover_url: '',
-            original_title: '',
-            year: '',
-            genres: [{
-                title: '',
-                url: ''
-            },
-            plot: '',
-            cast: [{
-                name: '',
-                url: ''
-            }],
-            parental_rating: 12,
-            languages: [],
-            audio_qualities: [],
-            wuaki_rating: {
-                normalized_rating: 4,
-                ratings_countt: 23
-            }
-            ratings: [{
-                provider_name: '',
-                url: '',
-                normalized_rating: '',
-                raw_rating: 3,
-                max_raw_rating: 5
-            }],
-            related_contents: [{
-                    cover_url: '',
-                    content_url: '',
-                    price_label: '',
-                    normalized_rating: 3,
-                    title: ''
-            }]
-        }
-        
-# Group Tv shows
-
-# TvShow listing [/tv_shows]
-
-## GET
-
-Returns a paged listing of Tv Shows for a given market and device.
-
-+ Request (application/json)
-
-        {
-            device_type: 'web', // Required
-            market_code: 'es',  // Required
-            per_page: 10,
-            page: 1,
-        }
-
-+ Response 200 (application/json)
-
-        {
-            paging: {
-                per_page: 10
-                current_page: 1,
-                pages_count: 10
-            },
-            tv_shows: [{
-                id: 1231,
-                cover_url: '',
-                content_url: '',
-                label: '',
-                title: ''
-            }]
-        }
-
-# TvShow details [/tv_shows/{tv_show_id}]
-
-## GET
+## Post [/stream/0/posts/{post_id}]
+A Post is the other central object utilized by the App.net Stream API. It has rich text and annotations which comprise all of the content a users sees in their feed. Posts are closely tied to the follow graph...
 
 + Parameters
-    + tv_show_id (integer) The tv show id
+    + post_id: `1` (string) - The id of the Post.
+
++ Model (application/json)
     
-+ Request (application/json)
-
-        {
-            device_type: 'web', // Required
-            market_code: 'es'   // Required
-        }
-
-+ Response 200 (application/json)
-
-        {
-            id: {tv_show_id}
-            title: '',
-            seasons: [{
-                cover_url: '',
-                title: 'Season 1',
-                plot: '',
-                wuaki_rating: {
-                   normalized_rating: 4,
-                    ratings_countt: 23
-                },
-                episodes: [{
-                    title: '',
-                    url: '',
-                    duration_label: ''
-                }]
-            }]
-        }
-
-# Group Lists
-
-# List contents [/list/{list_id}]
-
-## GET
-
-Gets a list of mixed contents (Movies and TvShows)
-
-+ Request (application/json)
-
-        {
-            device_type: 'web', // Required
-            market_code: 'es',  // Required
-            per_page: 10,
-            page: 1,
-        }
-
-+ Response 200 (application/json)
-
-        {
-            paging: {
-                per_page: 10
-                current_page: 1,
-                pages_count: 10
+    ```js
+    {
+        "data": {
+            "id": "1", // note this is a string
+            "user": {
+                ...
             },
-            contents: [{
-                cover_url: '',
-                content_url: '',
-                label: '',
-                title: ''
-            }]
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@berg FIRST post on this new site #newsocialnetwork",
+            "html": "<span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\">@berg</span> FIRST post on <a href=\"https://join.app.net\" rel=\"nofollow\">this new site</a> <span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\">#newsocialnetwork</span>.",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": null,
+            "thread_id": "1",
+            "num_replies": 3,
+            "num_reposts": 0,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [{
+                    "name": "berg",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 5
+                }],
+                "hashtags": [{
+                    "name": "newsocialnetwork",
+                    "pos": 34,
+                    "len": 17
+                }],
+                "links": [{
+                    "text": "this new site",
+                    "url": "https://join.app.net"
+                    "pos": 20,
+                    "len": 13
+                }]
+            },
+            "you_reposted": false,
+            "you_starred": false
+        },
+        "meta": {
+            "code": 200,
         }
+    }
+    ```
+
+### Retrieve a Post [GET]
+Returns a specific Post.
+
++ Response 200
+    
+    [Post][]
+
+### Delete a Post [DELETE]
+Delete a Post. The current user must be the same user who created the Post. It returns the deleted Post on success.
+
++ Response 204
+
+## Posts Collection [/stream/0/posts]
+A Collection of posts.
+
++ Model (application/json)
+    
+    ```js
+    {
+        "data": [
+            {
+                "id": "1", // note this is a string
+                ...
+            },
+            {
+                "id": "2",
+                ...
+            },
+            {
+                "id": "3",
+                ...
+            },
+        ],
+        "meta": {
+            "code": 200,
+        }
+    }    
+    ```
+
+### Create a Post [POST]
+Create a new Post object. Mentions and hashtags will be parsed out of the post text, as will bare URLs...
+
++ Request
+    
+    [Post][]
+
++ Response 201
+    
+    [Post][]
+
+### Retrieve all Posts [GET]
+Retrieves all posts. 
+
++ Response 200
+    
+    [Posts Collection][]
+
+## Stars [/stream/0/posts/{post_id}/star]
+A User’s stars are visible to others, but they are not automatically added to your followers’ streams.
+
++ Parameters
+    + post_id: `1` (string) - The id of the Post.
+
+### Star a Post [POST]
+Save a given Post to the current User’s stars. This is just a “save” action, not a sharing action.
+
+*Note: A repost cannot be starred. Please star the parent Post.*
+
++ Response 200
+    
+    [Post][]
+
+### Unstar a Post [DELETE]
+Remove a Star from a Post.
+
++ Response 200
+        
+    [Post][]
